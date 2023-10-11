@@ -19,14 +19,15 @@ pipeline {
         }
         
         stage('Build and Push Docker Image') {
-         REGISTRY_CREDENTIALS = credentials('docker-cred')
-          }
+         environment {    
+               REGISTRY_CREDENTIALS = credentials('docker-cred')
            steps {
                script {
                  sh 'docker build -t reactimage .'
                  sh 'docker tag reactimage:latest rajeshreactimage/dev:latest'
                  docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
                  dockerImage.push()
+                 }      
             }
         }
       }
